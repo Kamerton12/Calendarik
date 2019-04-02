@@ -4,6 +4,9 @@ import android.animation.Animator
 import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.content.ContentProvider
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +16,9 @@ import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import android.graphics.drawable.AnimationDrawable
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.animation.*
 
 
@@ -79,6 +85,10 @@ class MainActivity : AppCompatActivity() {
             Log.i("ggg", "length")
             if(password == key){
                 Log.i("ggg", "all")
+                val intent = Intent(this, CalendarActivity::class.java)
+                startActivity(intent)
+                finish()
+
             } else {
                 val off = 20f
 
@@ -88,9 +98,15 @@ class MainActivity : AppCompatActivity() {
                 startAnim.interpolator = DecelerateInterpolator()
                 startAnim.duration = dur / 2
 
+                val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE))
+                } else {
+                    vibrator.vibrate(300)
+                }
+
                 startAnim.setAnimationListener(object: Animation.AnimationListener{
-                    override fun onAnimationRepeat(animation: Animation?) {
-                    }
+                    override fun onAnimationRepeat(animation: Animation?) {}
 
                     override fun onAnimationEnd(animation: Animation?) {
                         val anim = TranslateAnimation(-off, off, 0f, 0f)
@@ -102,8 +118,7 @@ class MainActivity : AppCompatActivity() {
                         shake.startAnimation(anim)
 
                         anim.setAnimationListener(object: Animation.AnimationListener{
-                            override fun onAnimationRepeat(animation: Animation?) {
-                            }
+                            override fun onAnimationRepeat(animation: Animation?) {}
 
                             override fun onAnimationEnd(animation: Animation?) {
                                 val endAnim = TranslateAnimation(-off, 0f, 0f, 0f)
@@ -113,13 +128,10 @@ class MainActivity : AppCompatActivity() {
                                 shake.startAnimation(endAnim)
                             }
 
-                            override fun onAnimationStart(animation: Animation?) {
-                            }
-
+                            override fun onAnimationStart(animation: Animation?) {}
                         })
                     }
-                    override fun onAnimationStart(animation: Animation?) {
-                    }
+                    override fun onAnimationStart(animation: Animation?) {}
                 })
                 shake.startAnimation(startAnim)
             }
