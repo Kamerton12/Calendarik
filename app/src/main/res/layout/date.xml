@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:layout_width="@dimen/date_width" android:gravity="center"
+          android:layout_height="@dimen/date_width" android:text="g"
+          android:background="@drawable/calendar_back_date" xmlns:android="http://schemas.android.com/apk/res/android"/>

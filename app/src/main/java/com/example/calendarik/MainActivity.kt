@@ -54,10 +54,7 @@ class MainActivity : AppCompatActivity() {
         pswd.layoutTransition = transition
 
         button_backspace.setOnLongClickListener {
-            key = ""
-            textView.text = key
-            for(i in pswd.childCount-1 downTo 1)
-                pswd.removeViewAt(i)
+            clear()
             return@setOnLongClickListener true
         }
     }
@@ -77,6 +74,13 @@ class MainActivity : AppCompatActivity() {
         }
         textView.text = key
         tryPassword()
+    }
+
+    private fun clear(){
+        key = ""
+        textView.text = key
+        for(i in pswd.childCount-1 downTo 1)
+            pswd.removeViewAt(i)
     }
 
     private fun tryPassword(){
@@ -124,6 +128,8 @@ class MainActivity : AppCompatActivity() {
                                 val endAnim = TranslateAnimation(-off, 0f, 0f, 0f)
                                 endAnim.interpolator = AccelerateInterpolator()
                                 endAnim.duration = dur / 2
+
+                                clear()
 
                                 shake.startAnimation(endAnim)
                             }
